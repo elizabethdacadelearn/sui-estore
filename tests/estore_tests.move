@@ -210,15 +210,15 @@ module estore::profile_tests {
             ts::return_shared(store);
         };
 
-       // User2 buys  the item 
+       // User2 rent  the item 
         next_tx(scenario, TEST_ADDRESS2);
         {
             let mut store = ts::take_shared<Estore>(scenario);
             let itemid: u64 = 0;
             let userid: u64 = 1;
-            let mut payment = mint_for_testing<SUI>(1_000_000_000, ts::ctx(scenario));
+            let mut payment = mint_for_testing<SUI>(2_000_000_000, ts::ctx(scenario));
 
-            es::buy_item(&mut store, itemid, userid, &mut payment, ts::ctx(scenario));
+            es::rent_item(&mut store, itemid, userid, &mut payment, ts::ctx(scenario));
             
             transfer::public_transfer(payment, TEST_ADDRESS2);
 
@@ -227,7 +227,4 @@ module estore::profile_tests {
 
         ts::end(scenario_test);
     }
-
-
-
 }
