@@ -123,7 +123,7 @@ transfer::share_object(newstore);
 }
 
 //add items to the store
-public entry fun add_item(store:&mut Estore,nameofitem:String,description:u64,price:u64,owner:&AdminCap,ctx:&mut TxContext){
+public entry fun add_item(owner:&AdminCap, store:&mut Estore,nameofitem:String,description:u64,price:u64,ctx:&mut TxContext){
 
     //verify that its only the admin performing the action
     assert!(&owner.estoreid == object::uid_as_inner(&store.id),ONLYOWNER);
