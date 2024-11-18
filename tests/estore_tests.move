@@ -5,6 +5,7 @@ module estore::profile_tests {
     use sui::sui::{SUI};
 
     use std::string::{Self};
+    use std::debug::print;
 
     use estore::helpers::init_test_helper;
     use estore::estore::{Self as es, AdminCap, Estore};
@@ -12,8 +13,10 @@ module estore::profile_tests {
     const ADMIN: address = @0xe;
     const TEST_ADDRESS1: address = @0xee;
     const TEST_ADDRESS2: address = @0xbb;
+    const TEST_ADDRESS3: address = @0xbc;
 
     #[test]
+    #[expected_failure(abort_code = 0)]
     public fun test() {
         let mut scenario_test = init_test_helper();
         let scenario = &mut scenario_test;
@@ -41,13 +44,45 @@ module estore::profile_tests {
             ts::return_to_sender(scenario, cap); 
         };
 
-        
-         
-         
+        // Update item_price  
+        next_tx(scenario, TEST_ADDRESS1);
+        {
+            let owner = ts::take_from_sender<AdminCap>(scenario);
+            let mut store = ts::take_shared<Estore>(scenario);
+            let item_id: u64 = 0;
+            let new_price: u64 = 1_000_000_000;
+            print(&store);
 
+            es::update_item_price(&owner, &mut store, item_id, new_price, ts::ctx(scenario));
 
+            ts::return_shared(store);
+            ts::return_to_sender(scenario, owner); 
+        };
+
+        // User1 register with alice 
+        next_tx(scenario, TEST_ADDRESS2);
+        {
+            let mut store = ts::take_shared<Estore>(scenario);
+            let nameofuser = string::utf8(b"alice");
+
+            es::register_user(&mut store, nameofuser, ts::ctx(scenario));
+
+            ts::return_shared(store);
+        };
+
+        // User2 register with alice again
+        next_tx(scenario, TEST_ADDRESS3);
+        {
+            let mut store = ts::take_shared<Estore>(scenario);
+            let nameofuser = string::utf8(b"alice");
+
+            es::register_user(&mut store, nameofuser, ts::ctx(scenario));
+
+            ts::return_shared(store);
+        };
         ts::end(scenario_test);
     }
+    
 
 
 
