@@ -1,19 +1,38 @@
-/*
 #[test_only]
-module estore::estore_tests {
-    // uncomment this line to import the module
-    // use estore::estore;
+module estore::profile_tests { 
+    use sui::test_scenario::{Self as ts, next_tx};
+    use sui::coin::{mint_for_testing};
+    use sui::sui::{SUI};
 
-    const ENotImplemented: u64 = 0;
+    use std::string::{Self};
+
+    use estore::helpers::init_test_helper;
+    use estore::estore::{Self as es};
+
+    const ADMIN: address = @0xe;
+    const TEST_ADDRESS1: address = @0xee;
+    const TEST_ADDRESS2: address = @0xbb;
 
     #[test]
-    fun test_estore() {
-        // pass
+    public fun test() {
+        let mut scenario_test = init_test_helper();
+        let scenario = &mut scenario_test;
+
+        // create the voting shared object 
+        next_tx(scenario, TEST_ADDRESS1);
+        {
+
+
+
+        };
+         
+
+
+        ts::end(scenario_test);
     }
 
-    #[test, expected_failure(abort_code = ::estore::estore_tests::ENotImplemented)]
-    fun test_estore_fail() {
-        abort ENotImplemented
-    }
+
+
+
+
 }
-*/
