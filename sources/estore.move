@@ -123,7 +123,7 @@ transfer::share_object(newstore);
 }
 
 //add items to the store
-public entry fun add_item(store:&mut Estore,nameofitem:String,description:u64,price:u64,owner:&AdminCap,ctx:&mut TxContext){
+public entry fun add_item(owner:&AdminCap, store:&mut Estore,nameofitem:String,description:u64,price:u64,ctx:&mut TxContext){
 
     //verify that its only the admin performing the action
     assert!(&owner.estoreid == object::uid_as_inner(&store.id),ONLYOWNER);
@@ -150,7 +150,7 @@ public entry fun add_item(store:&mut Estore,nameofitem:String,description:u64,pr
 
 //update item price
 
-public entry fun update_item_price(store:&mut Estore,itemid:u64,newprice:u64,owner:&AdminCap,ctx:&mut TxContext){
+public entry fun update_item_price(owner:&AdminCap, store:&mut Estore,itemid:u64,newprice:u64,ctx:&mut TxContext){
 
     //verify that its the owner performing the action
      assert!(&owner.estoreid == object::uid_as_inner(&store.id),ONLYOWNER);
@@ -169,7 +169,7 @@ public entry fun update_item_price(store:&mut Estore,itemid:u64,newprice:u64,own
 
 //user regiter or login to estore
 
-public entry fun register_user(nameofuser:String,store:&mut Estore,ctx:&mut TxContext){
+public entry fun register_user(store:&mut Estore, nameofuser:String, ctx:&mut TxContext){
 
     //verify that username is unique
     let mut startindex:u64=0;
