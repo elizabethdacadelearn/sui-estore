@@ -272,7 +272,7 @@ public entry fun rent_item(store:&mut Estore,itemid:u64,userid:u64,payment:&mut 
     };
     store.rented.push_back(renteditem);
     //update items status
-    store.items[itemid].rented==true;
+    store.items[itemid].rented=true;
     event::emit(RentedItem{
         name:store.items[itemid].nameofitem,
         by:userid
@@ -299,6 +299,8 @@ public entry fun return_rented_item(store:&mut Estore,userid:u64,itemid:u64,buye
                  buyersaddress
             };
             store.refunds.push_back(newrefundrequest);
+            //update details of refunded item
+            store.items[itemid].rented=false;
         };
         index=index+1;
     }
